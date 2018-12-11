@@ -14,6 +14,10 @@ BOT_NAME = 'cnblogSpider'
 SPIDER_MODULES = ['cnblogSpider.spiders']
 NEWSPIDER_MODULE = 'cnblogSpider.spiders'
 
+MONGO_URI = "localhost:27017"
+DB_NAME = "testdb"
+DB_USER = "test"
+DB_PASS = "123456"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'cnblogSpider (+http://www.yourdomain.com)'
@@ -80,8 +84,9 @@ COOKIES_ENABLED = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'cnblogSpider.pipelines.CnblogspiderPipeline': 300,
-   'cnblogSpider.pipelines.ImagesPipeline': 300,
+    # 'cnblogSpider.pipelines.CnblogspiderPipeline': 300,
+    # 'cnblogSpider.pipelines.ImagesPipeline': 300,
+    'cnblogSpider.pipelines.MongoPipeline': 301,
    # 'scrapy.pipelines.files.FilesPipeline': 1,
    # 'scrapy.pipelines.images.ImagesPipeline': 290,
 }
