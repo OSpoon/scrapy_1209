@@ -4,8 +4,17 @@
 #
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
+import requests
 from scrapy import signals
+
+
+class ProxyMiddleware(object):
+
+    def process_request(self, request, spider):
+        proxy_addr = requests.get('http://123.207.35.36:5010/get/').text
+        print('代理Ip ：', 'http://{0}'.format(proxy_addr))
+        request.meta['proxy'] = 'http://{0}'.format(proxy_addr)
+
 
 class RandomUserAgentMiddleware(object):
     def process_request(self, request, spider):

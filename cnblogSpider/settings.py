@@ -74,6 +74,8 @@ COOKIES_ENABLED = True
 DOWNLOADER_MIDDLEWARES = {
     # 'cnblogSpider.middlewares.CnblogspiderDownloaderMiddleware': 543,
     'cnblogSpider.middlewares.RandomUserAgentMiddleware': 544,
+    'cnblogSpider.middlewares.ProxyMiddleware': 500,
+
 }
 
 # Enable or disable extensions

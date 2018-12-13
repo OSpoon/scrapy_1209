@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+from scrapy import Request
 
 
 class AnjukeSpider(scrapy.Spider):
@@ -14,11 +15,15 @@ class AnjukeSpider(scrapy.Spider):
 
 
     def loc_url_callback(self, response):
-        print(response.text)
-        loc_list = response.xpath("//div[@class='sub-items sub-level1']/a/@href")
-        print(loc_list)
-        for item in loc_list:
-            print(item)
+        print(response.xpath("//title/text()").extract()[0])
+        loc_list = response.xpath("//div[@class='sub-items sub-level1']/a/@href").extract()
+        for loc_url in loc_list:
+            print(loc_url)
+            yield scrapy.Request(loc_url, callback=self.all_url_callback, dont_filter=True)
+
+    def all_url_callback(self, response):
+        print(response.xpath("//title/text()").extract()[0])
+
 
     def parse(self, response):
         pass
