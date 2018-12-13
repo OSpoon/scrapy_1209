@@ -87,7 +87,7 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     # 'cnblogSpider.pipelines.CnblogspiderPipeline': 300,
     # 'cnblogSpider.pipelines.ImagesPipeline': 300,
-    'cnblogSpider.pipelines.MongoPipeline': 301,
+    # 'cnblogSpider.pipelines.MongoPipeline': 301,
    # 'scrapy.pipelines.files.FilesPipeline': 1,
    # 'scrapy.pipelines.images.ImagesPipeline': 290,
 }

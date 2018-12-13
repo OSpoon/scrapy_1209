@@ -9,6 +9,12 @@ from cnblogSpider.items import RenthousescrapyItem
 class ZufangSpider(scrapy.Spider):
     name = 'zufang'
     allowed_domains = ['fang.com']
+    # 单独配置setting
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'cnblogSpider.pipelines.MongoPipeline': 301,
+        }
+    }
     allUrlList = []
     headUrlList = []
     baseUrl = "http://sz.zu.fang.com"

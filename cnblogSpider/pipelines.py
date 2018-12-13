@@ -14,9 +14,11 @@ from pymongo import MongoClient
 
 base_dir = os.getcwd()
 
+
 class MongoPipeline(object):
+
     # 实现保存到mongo数据库的类，
-    collection = 'ftx'  # mongo 数据库的 collection 的默认名字
+   # collection = 'ftx'  # mongo 数据库的 collection 的默认名字
 
     def __init__(self, mongo_uri, db_name, db_user, db_pass):
         self.mongo_uri = mongo_uri
@@ -26,7 +28,7 @@ class MongoPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
-        # scrapy 为我们访问settings提供了这样的一个方法，这里，
+        # crawler对象可以连接scrapy核心组件
         # 我们需要从 settings.py 文件中，取得数据库的URI和数据库名称
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
@@ -34,22 +36,26 @@ class MongoPipeline(object):
             db_user=crawler.settings.get('DB_USER'),
             db_pass=crawler.settings.get('DB_PASS'))
 
-    def open_spider(self, spider):  # 爬虫启动时调用，连接到数据库
+    def open_spider(self, spider):
+        print("========== MongoPipeline启动 ================")
+        print("========== 开始连接Mongo ================")
+        # 爬虫启动时调用，连接到数据库
         self.client = MongoClient(self.mongo_uri)
-        self.zfdb = self.client[self.db_name]
-        self.zfdb.authenticate(self.db_user, self.db_pass)
-        print('连接到数据库')
+        self.collections = self.client[self.db_name]
+        self.collections.authenticate(self.db_user, self.db_pass)
+        print("========== 连接Mongo成功 ================")
 
-    def close_spider(self, spider):  # 爬虫关闭时调用，关闭数据库连接
+    def close_spider(self, spider):
+        print("========== 爬虫关闭 ================")
+        print("========== Mong连接断开 ================")
         self.client.close()
 
     def process_item(self, item, spider):
-        # if item["region"]:
-        print('process_item')
+        print("========== process item ================")
         self.collection = item["region"]
         if item["region"] == "不限":
             item["region"] = item["address"][0:2]
-        self.zfdb[self.collection].insert({
+        self.collections[self.collection].insert({
             "title": item["title"].strip(),
             "rooms": item["rooms"],
             "area": item["area"],
