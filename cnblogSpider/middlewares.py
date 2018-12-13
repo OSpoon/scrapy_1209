@@ -7,6 +7,13 @@
 
 from scrapy import signals
 
+class RandomUserAgentMiddleware(object):
+    def process_request(self, request, spider):
+        from fake_useragent import UserAgent
+        ua = UserAgent(verify_ssl=False)
+        ua_rendom = ua.random
+        print('UserAgent ===> ', ua_rendom)
+        request.headers.setdefault('User-Agent', ua_rendom)
 
 class CnblogspiderSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
