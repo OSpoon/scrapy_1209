@@ -8,6 +8,12 @@
 import scrapy
 
 
+class DoutulaspiderItem(scrapy.Item):
+    title = scrapy.Field()
+    update = scrapy.Field()
+    image_urls = scrapy.Field()
+    image_paths = scrapy.Field()
+
 class CnblogspiderItem(scrapy.Item):
     # define the fields for your item here like:
     url = scrapy.Field()

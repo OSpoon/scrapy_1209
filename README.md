@@ -178,4 +178,3 @@ class LoginSpider(scrapy.Spider):
 
         # continue scraping with authenticated session...
 ```
-
