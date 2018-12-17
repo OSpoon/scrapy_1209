@@ -6,6 +6,75 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 import requests
 from scrapy import signals
+from logging import getLogger
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from scrapy.http import HtmlResponse
+
+
+class SleniumMiddleware(object):
+
+    def __init__(self, timeout=None, service_args=[]):
+        print('init start')
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        import os
+        project_dir = os.path.abspath(os.path.dirname(__file__))
+
+        self.logger = getLogger(__name__)
+        self.timeout = timeout
+        self.browser = webdriver.Chrome(executable_path=os.path.join(project_dir,'chromedriver'), chrome_options=chrome_options)
+        self.browser.set_window_size(1400, 700)
+        self.browser.set_page_load_timeout(self.timeout)
+        self.wait = WebDriverWait(self.browser, self.timeout)
+        print('init end')
+
+    def __del__(self):
+        print('__del__')
+        self.browser.close()
+
+    def process_request(self, request, spider):
+        """
+        PhantomJS抓取页面
+        """
+        self.logger.debug("PhantomJS is Starting")
+        page = request.meta.get('page', 1)
+        print('page => ', page)
+        print('url => ', request.url)
+        try:
+            self.browser.get(request.url)
+            if page > 1:
+                input = self.wait.until(
+                    EC.presence_of_element_located(
+                        (By.XPATH, '//*[@id="bottomPage"]')
+                    )
+                )
+                submit = self.wait.until(
+                    EC.element_to_be_clickable(
+                        (By.XPATH, '//*[@id="bottom_pager"]/div/a[7]')
+                    )
+                )
+                input.clear()
+                input.send_keys(page)
+                submit.click()
+            return HtmlResponse(url=request.url,
+                                body=self.browser.page_source,
+                                request=request,
+                                encoding='utf-8',
+                                status=200)
+        except TimeoutException:
+            return HtmlResponse(url=request.url, status=500, request=request)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        print('from_crawler')
+        return cls(timeout=crawler.settings.get('SELENIUM_TIMEOUT'),
+                   service_args=crawler.settings.get('PHANTOMJS_SERVICE_ARGS'))
 
 
 class ProxyMiddleware(object):

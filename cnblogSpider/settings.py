@@ -73,9 +73,9 @@ COOKIES_ENABLED = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'cnblogSpider.middlewares.CnblogspiderDownloaderMiddleware': 543,
-    'cnblogSpider.middlewares.RandomUserAgentMiddleware': 544,
-    'cnblogSpider.middlewares.ProxyMiddleware': 500,
-
+    # 'cnblogSpider.middlewares.RandomUserAgentMiddleware': 544,
+    # 'cnblogSpider.middlewares.ProxyMiddleware': 500,
+    'cnblogSpider.middlewares.SleniumMiddleware': 501,
 }
 
 # Enable or disable extensions
@@ -135,3 +135,11 @@ IMAGES_THUMBS={
 
 IMAGES_MIN_HEIGHT = 110
 IMAGES_MIN_WIDTH = 110
+
+
+KEYWORD = ['笔记本']
+MAX_PAGE = 100
+
+SELENIUM_TIMEOUT = 20
+
+PHANTOMJS_SERVICE_ARGS = ['--load-images=false', '--disk-cache=true']

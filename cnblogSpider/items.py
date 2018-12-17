@@ -8,11 +8,22 @@
 import scrapy
 
 
+class ProductItem(scrapy.Item):
+    collection = 'products'
+    image = scrapy.Field()
+    price = scrapy.Field()
+    deal = scrapy.Field()
+    title = scrapy.Field()
+    shop = scrapy.Field()
+    location = scrapy.Field()
+
+
 class DoutulaspiderItem(scrapy.Item):
     title = scrapy.Field()
     update = scrapy.Field()
     image_urls = scrapy.Field()
     image_paths = scrapy.Field()
+
 
 class CnblogspiderItem(scrapy.Item):
     # define the fields for your item here like:
