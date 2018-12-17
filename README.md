@@ -178,3 +178,10 @@ class LoginSpider(scrapy.Spider):
 
         # continue scraping with authenticated session...
 ```
+
+
+scrapyd
+
+scrapyd-deploy 100 -p myspider -v 1
+
+curl http://127.0.0.1:6800/schedule.json -d project=cnblogSpider -d spider=anjuke

@@ -1,3 +1,13 @@
 
 /cnblogSpider/__pycache__/
 /cnblogSpider/spiders/__pycache__/
+!/build/
+build/
+cnblogSpider/output/images/full/
+cnblogSpider/output/images/thumbs/
+dbs/
+eggs/
+logs/
+project.egg-info/
+setup.py
+twistd.pid
