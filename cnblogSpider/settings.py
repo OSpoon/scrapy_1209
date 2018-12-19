@@ -75,7 +75,7 @@ DOWNLOADER_MIDDLEWARES = {
     # 'cnblogSpider.middlewares.CnblogspiderDownloaderMiddleware': 543,
     # 'cnblogSpider.middlewares.RandomUserAgentMiddleware': 544,
     # 'cnblogSpider.middlewares.ProxyMiddleware': 500,
-    'cnblogSpider.middlewares.SleniumMiddleware': 501,
+    'cnblogSpider.middlewares.SleniumMiddleware': 1,
 }
 
 # Enable or disable extensions
@@ -137,7 +137,7 @@ IMAGES_MIN_HEIGHT = 110
 IMAGES_MIN_WIDTH = 110
 
 
-KEYWORD = ['笔记本']
+KEYWORD = ['手机']
 MAX_PAGE = 100
 
 SELENIUM_TIMEOUT = 20

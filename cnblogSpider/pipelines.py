@@ -15,6 +15,20 @@ from pymongo import MongoClient
 base_dir = os.getcwd()
 
 
+class SuningspiderPipeline(object):
+
+    def __init__(self):
+        self.file = open('output/pagers.json', 'w')
+
+    def process_item(self, item, spider):
+        if item['price']:
+            line = json.dumps(dict(item)) + '\n'
+            self.file.write(line)
+            return item
+        else:
+            raise DropItem("Missing title in %s" % item)
+
+
 class DoutulaPipeline(object):
 
     # 实现保存到mongo数据库的类，

@@ -8,6 +8,10 @@
 import scrapy
 
 
+class SuningItem(scrapy.Item):
+    price = scrapy.Field()
+
+
 class ProductItem(scrapy.Item):
     collection = 'products'
     image = scrapy.Field()

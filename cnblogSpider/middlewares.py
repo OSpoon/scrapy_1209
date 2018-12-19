@@ -14,14 +14,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from scrapy.http import HtmlResponse
-
+import time
 
 class SleniumMiddleware(object):
 
     def __init__(self, timeout=None, service_args=[]):
         print('init start')
         chrome_options = Options()
-        chrome_options.add_argument('--headless')
+        # chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
         import os
         project_dir = os.path.abspath(os.path.dirname(__file__))
@@ -48,20 +48,27 @@ class SleniumMiddleware(object):
         print('url => ', request.url)
         try:
             self.browser.get(request.url)
-            if page > 1:
-                input = self.wait.until(
+            if page == 1:
+                self.wait.until(
                     EC.presence_of_element_located(
-                        (By.XPATH, '//*[@id="bottomPage"]')
+                        (By.XPATH, '//*[@id="pop418"]/a')
                     )
+                ).click()
+                time.sleep(1)
+            input = self.wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//*[@id="bottomPage"]')
                 )
-                submit = self.wait.until(
-                    EC.element_to_be_clickable(
-                        (By.XPATH, '//*[@id="bottom_pager"]/div/a[7]')
-                    )
+            )
+            submit = self.wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, '//*[@id="bottom_pager"]/div/a[7]')
                 )
-                input.clear()
-                input.send_keys(page)
-                submit.click()
+            )
+            input.clear()
+            input.send_keys(page)
+            submit.click()
+            time.sleep(10)
             return HtmlResponse(url=request.url,
                                 body=self.browser.page_source,
                                 request=request,
